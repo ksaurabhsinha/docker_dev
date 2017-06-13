@@ -16,9 +16,8 @@ RUN apt-get update && apt-get install -y \
     mysqli \
     pdo_mysql
 
-# Instal Oh my Zsh
-RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
-RUN sed -i -- 's/robbyrussell/ys/g' /root/.zshrc
-RUN echo "plugins=(git symfony2)" >> ~/.zshrc
-
 COPY ./php.ini /usr/local/etc/php/php.ini
+
+COPY start.sh /usr/local/bin
+
+RUN /usr/local/bin/start.sh
