@@ -17,9 +17,11 @@ initialize:
 
 clone_repo:
 	cd ${PROJECT_ROOT}/${PROJECT_DIRECTORY} && git clone ${REPO_URL} .
-	
+
 project_setup:
 	cd ${PROJECT_ROOT}/${PROJECT_DIRECTORY} && chmod -R 777 storage && cp .env.example .env && php artisan key:generate
 
+infra_pull:
+	git pull
 
 install: initialize setup clone_repo project_setup
