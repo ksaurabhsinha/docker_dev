@@ -32,4 +32,12 @@ laravelfix:
 infra_pull:
 	git pull
 
+project_start:
+	docker-compose up -d
+
+project_down:
+	docker-compose down
+
+project_restart: project_down project_start
+
 install: initialize setup clone_repo project_setup reinitialize laravelfix
