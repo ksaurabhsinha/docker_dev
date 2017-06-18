@@ -19,12 +19,9 @@ clone_repo:
 	cd ${PROJECT_ROOT}/${PROJECT_DIRECTORY} && git clone ${REPO_URL} .
 
 project_setup:
-	cd ${PROJECT_ROOT}/${PROJECT_DIRECTORY} && chmod -R 777 storage && cp .env.example .env && composer dump-autoload --optimize
+	cd ${PROJECT_ROOT}/${PROJECT_DIRECTORY} && chmod -R 777 storage && cp .env.example .env
 	cd ${PROJECT_ROOT}/${PROJECT_DIRECTORY} && chmod -R 777 bootstrap/cache
-
-reinitialize:
-	docker-compose down
-	docker-compose up -d
+	cd ${PROJECT_ROOT}/${PROJECT_DIRECTORY} && git config core.fileMode false
 
 laravelfix:
 	docker exec dockerdev_php_1 php artisan key:generate
@@ -40,4 +37,4 @@ project_down:
 
 project_restart: project_down project_start
 
-install: initialize setup clone_repo project_setup reinitialize laravelfix
+install: initialize setup clone_repo project_setup project_restart laravelfix
