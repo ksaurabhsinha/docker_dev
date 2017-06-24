@@ -2,6 +2,7 @@ version: "2.1"
 
 services:
     nginx:
+        container_name: dockerdev_nginx
         build: ./nginx/
         ports:
             - 8000:80
@@ -14,6 +15,7 @@ services:
             - php
 
     php:
+        container_name: dockerdev_php
         build: ./php/
         expose:
             - 9000
@@ -27,6 +29,7 @@ services:
             - mysql
 
     mysql:
+        container_name: dockerdev_mysql
         image: mysql:latest
         volumes:
             - data:/var/lib/mysql
@@ -41,6 +44,7 @@ services:
             MYSQL_PASSWORD: "${DB_PASSWORD}"
 
     phpmyadmin:
+        container_name: dockerdev_phpmyadmin
         image: phpmyadmin/phpmyadmin
         ports:
             - 8080:80
