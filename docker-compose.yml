@@ -30,6 +30,8 @@ services:
         image: mysql:latest
         volumes:
             - data:/var/lib/mysql
+        ports:
+            - 4567:3306
         networks:
             - database
         environment:
