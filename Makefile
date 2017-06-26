@@ -33,7 +33,7 @@ project_setup:
 	cd ${PROJECT_ROOT}/${PROJECT_DIRECTORY} && git config core.fileMode false
 
 laravelfix:
-	@docker exec dockerdev_php_1 php artisan key:generate
+	@docker exec dockerdev_php php artisan key:generate
 
 infra_pull:
 	@git pull
