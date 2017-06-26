@@ -10,7 +10,7 @@ include makefiles/*.mk
 
 setup:
 	$(call message, Building the Docker Containers)
-	@docker-compose up -d --build
+	@docker-compose up -d --build --force-recreate
 
 initialize:
 	$(call message, Creating project directory and permissions)
@@ -21,6 +21,15 @@ initialize:
 	@mkdir -p ${PROJECT_ROOT}/${LOG_DIRECTORY};
 	@sudo chown -R ${USER:=$(/usr/bin/id -run)} ${PROJECT_ROOT}/${LOG_DIRECTORY};
 	@sudo chmod -R 777 ${PROJECT_ROOT}/${LOG_DIRECTORY};
+
+	@mkdir -p ${PROJECT_ROOT}/${DATABASE_DIRECTORY};
+	@sudo chown -R ${USER:=$(/usr/bin/id -run)} ${PROJECT_ROOT}/${DATABASE_DIRECTORY};
+	@sudo chmod -R 777 ${PROJECT_ROOT}/${DATABASE_DIRECTORY};
+
+create_data_dir:
+	@mkdir -p ${PROJECT_ROOT}/${DATABASE_DIRECTORY};
+	@sudo chown -R ${USER:=$(/usr/bin/id -run)} ${PROJECT_ROOT}/${DATABASE_DIRECTORY};
+	@sudo chmod -R 777 ${PROJECT_ROOT}/${DATABASE_DIRECTORY};
 
 clone_repo:
 	$(call message, Cloning the Repo)
@@ -33,7 +42,7 @@ project_setup:
 	cd ${PROJECT_ROOT}/${PROJECT_DIRECTORY} && git config core.fileMode false
 
 laravelfix:
-	@docker exec dockerdev_php php artisan key:generate
+	@docker exec dockerdev_php_1 php artisan key:generate
 
 infra_pull:
 	@git pull
@@ -47,6 +56,9 @@ project_down:
 	@docker-compose down
 
 project_restart: project_down project_start
+
+project_recreate: project_down create_data_dir
+	@docker-compose up -d --build --force-recreate
 
 success:
 	@echo "${RED} ****************************************************************"
