@@ -44,20 +44,20 @@ project_setup:
 laravelfix:
 	@docker exec dockerdev_php_1 php artisan key:generate
 
-infra_pull:
+infra_pull: intro_text
 	@git pull
 
-project_start:
+project_start: intro_text
 	$(call message, Starting Containers)
 	@docker-compose up -d
 
-project_down:
+project_down: intro_text
 	$(call message, Stopping Containers)
 	@docker-compose down
 
-project_restart: project_down project_start
+project_restart: intro_text project_down project_start
 
-project_recreate: project_down create_data_dir
+project_recreate: intro_text project_down create_data_dir
 	@docker-compose up -d --build --force-recreate
 
 success:
