@@ -3,6 +3,9 @@
 This is the LEMP (Linux, Nginx, MySQL, PHP) docker setup I use for development.
 This is majorly focused on Laravel but can be modified very easily.
 
+### Pre-requisite
+Install Docker Daemon, docker-machine, docker-compose and Virtualbox
+
 ### Clone the repository
 
 ```sh
