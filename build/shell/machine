@@ -1,0 +1,36 @@
+#! /bin/sh
+
+source build/shell/common
+
+machine () {
+
+  create () {
+    set +e
+    status="$(docker-machine status ${PROJECT_NAME})"
+    rc=$?
+    set -e
+    if [ "$rc" = "1" ]; then
+      display_success "Creating virtual machine - ${PROJECT_NAME}"
+      docker-machine create --driver virtualbox --virtualbox-memory "${MEMORY_SIZE}" --virtualbox-disk-size "${DISK_SIZE}" "${PROJECT_NAME}"
+    elif [ "$status" != "Running" ]; then
+      display_info "Machine: ${PROJECT_NAME} is already available. Starting the machine now!"
+      docker-machine start "${PROJECT_NAME}"
+    else
+      display_info "Machine: ${PROJECT_NAME} is already running."
+    fi
+  }
+
+  case $1 in
+  create)
+    create
+    ;;
+  *)
+
+    cat <<-EOF
+
+EOF
+    ;;
+  esac
+}
+
+machine $@

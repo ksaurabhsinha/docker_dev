@@ -1,5 +1,7 @@
 FROM php:7.0-fpm
 
+MAINTAINER Kumar Saurabh Sinha "sinha.ksaurabh@gmail.com"
+
 RUN apt-get update && apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
@@ -16,8 +18,8 @@ RUN apt-get update && apt-get install -y \
     mysqli \
     pdo_mysql
 
-COPY ./php.ini /usr/local/etc/php/php.ini
+COPY ./configuration/php.ini /usr/local/etc/php/php.ini
 
-COPY start.sh /usr/local/bin
+COPY ./entrypoint/start.sh /usr/local/bin
 
 RUN /usr/local/bin/start.sh

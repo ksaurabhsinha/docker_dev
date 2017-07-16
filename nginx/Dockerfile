@@ -1,3 +1,5 @@
 FROM nginx:latest
 
-COPY ./default.conf /etc/nginx/conf.d/default.conf
+MAINTAINER Kumar Saurabh Sinha "sinha.ksaurabh@gmail.com"
+
+COPY ./configuration/default.conf /etc/nginx/conf.d/default.conf

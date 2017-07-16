@@ -3,11 +3,12 @@ version: "2.1"
 services:
     nginx:
         build: ./nginx/
+        container_name: ${PROJECT_NAME}_nginx
         ports:
-            - 8000:80
+            - 80:80
         volumes:
-            - "${PROJECT_ROOT}/${PROJECT_DIRECTORY}:/var/www/html:ro"
-            - "${PROJECT_ROOT}/${LOG_DIRECTORY}:/var/log/nginx/"
+            - "~/${PROJECT_NAME}/src:/var/www/html:ro"
+            - "~/${PROJECT_NAME}/logs:/var/log/nginx/"
         networks:
             - server
         depends_on:
@@ -15,11 +16,13 @@ services:
 
     php:
         build: ./php/
+        container_name: ${PROJECT_NAME}_php
         expose:
             - 9000
         volumes:
-            - "${PROJECT_ROOT}/${PROJECT_DIRECTORY}:/var/www/html"
+            - "~/${PROJECT_NAME}/src:/var/www/html"
             - "${SSH_KEY_ROOT}:/root/.ssh"
+        working_dir: /var/www/html
         networks:
             - database
             - server
@@ -27,21 +30,26 @@ services:
             - mysql
 
     mysql:
-        image: mysql:latest
+        build: ./mysql/
+        container_name: ${PROJECT_NAME}_mysql
         volumes:
-            - "${PROJECT_ROOT}/${DATABASE_DIRECTORY}:/var/lib/mysql"
+            - db-data:/var/lib/mysql
         ports:
-            - 4567:3306
+            - 3306:3306
         networks:
             - database
+        dns_search: mysql
         environment:
             MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
             MYSQL_DATABASE: "${DB_NAME}"
             MYSQL_USER: "${DB_USERNAME}"
             MYSQL_PASSWORD: "${DB_PASSWORD}"
+        command: mysqld --sql_mode='' --max_allowed_packet=512M --innodb_buffer_pool_size=512M --innodb_flush_log_at_trx_commit=0
+        restart: always
 
     phpmyadmin:
-        image: phpmyadmin/phpmyadmin
+        build: ./phpmyadmin/
+        container_name: ${PROJECT_NAME}_phpmyadmin
         ports:
             - 8080:80
         networks:
@@ -52,7 +60,8 @@ services:
             PMA_HOST: mysql
 
 volumes:
-    data:
+    db-data:
+      driver: local
 
 networks:
     database:
