@@ -17,7 +17,7 @@ NC := $(shell echo "\033[0m") # No Color
 include build/makefiles/*.mk
 
 create_machine:
-	source build/shell/machine && machine create
+	@source build/shell/machine && machine create
 
 destroy_machine:
 	@docker-machine stop ${PROJECT_NAME}
@@ -47,6 +47,7 @@ project_setup:
 	cd ~/${PROJECT_NAME}/src && chmod -R 777 storage && cp .env.example .env
 	cd ~/${PROJECT_NAME}/src && chmod -R 777 bootstrap/cache
 	cd ~/${PROJECT_NAME}/src && git config core.fileMode false
+	cd ~/${PROJECT_NAME}/src && composer install
 
 laravelfix:
 	@eval $$(docker-machine env ${PROJECT_NAME}) && docker exec ${PROJECT_NAME}_php php artisan key:generate
