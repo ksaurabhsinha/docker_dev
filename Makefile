@@ -4,7 +4,7 @@ export PROJECT_NAME
 export MEMORY_SIZE
 export DISK_SIZE
 
-.PHONY: all build
+.PHONY: all build setup install
 
 # SHELL := /bin/bash
 
