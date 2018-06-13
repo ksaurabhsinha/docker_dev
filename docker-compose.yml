@@ -4,6 +4,7 @@ services:
     nginx:
         build: ./nginx/
         container_name: ${PROJECT_NAME}_nginx
+        dns_search: nginx
         ports:
             - 80:80
         volumes:
@@ -23,6 +24,7 @@ services:
             - "~/${PROJECT_NAME}/src:/var/www/html"
             - "${SSH_KEY_ROOT}:/root/.ssh"
         working_dir: /var/www/html
+        dns_search: php
         networks:
             - database
             - server
@@ -56,6 +58,7 @@ services:
             - database
         depends_on:
             - mysql
+        dns_search: phpmyadmin
         environment:
             PMA_HOST: mysql
 
